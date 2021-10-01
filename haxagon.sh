@@ -22,10 +22,11 @@ export LD_LIBRARY_PATH="$CLANG_DIR/lib:$LD_LIBRARY_PATH"
 export KBUILD_BUILD_VERSION="1"
 export LOCALVERSION
 
-clear
+#clear
 make clean
 make mrproper
 rm -rf out
+rm -rf *.zip
 mkdir -p out
 make O=out ARCH=arm64 $DEFCONFIG
 
