@@ -1585,8 +1585,7 @@ static int adreno_init(struct kgsl_device *device)
 
 	}
 
-
-	device->pwrscale.devfreqptr->max_freq = 1300000000;
+	device->pwrscale.devfreqptr->max_freq = 1100000000;
 
 	return 0;
 }

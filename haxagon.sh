@@ -12,9 +12,10 @@
 
 SECONDS=0 # builtin bash timer
 ZIPNAME="Hexagon-Ginkgo-OC-$(TZ=Asia/Jakarta date +"%Y%m%d-%H%M").zip"
-CLANG_DIR="/usr/bin/clang"
-GCC_64_DIR="/home/tew/kernel/aarch64-linux-android-4.9"
-GCC_32_DIR="/home/tew/kernel/arm-linux-androideabi-4.9"
+#CLANG_DIR="/usr/bin/clang"
+CLANG_DIR="/home/tew/kernel/Clang-21.0.0"
+GCC_64_DIR="/home/tew/kernel/Clang-21.0.0/bin"
+GCC_32_DIR="/home/tew/kernel/Clang-21.0.0/bin"
 DEFCONFIG="vendor/ginkgo-perf_defconfig"
 
 export PATH="$CLANG_DIR/bin:$PATH"
@@ -22,10 +23,10 @@ export LD_LIBRARY_PATH="$CLANG_DIR/lib:$LD_LIBRARY_PATH"
 export KBUILD_BUILD_VERSION="1"
 export LOCALVERSION
 
-clear
-make clean
-make mrproper
-rm -rf out
+#clear
+#make clean
+#make mrproper
+#rm -rf out
 rm -rf *.zip
 mkdir -p out
 make O=out ARCH=arm64 $DEFCONFIG
