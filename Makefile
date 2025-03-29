@@ -372,7 +372,7 @@ HOST_LFS_LIBS := $(shell getconf LFS_LIBS 2>/dev/null)
 HOSTCC       = gcc
 HOSTCXX      = g++
 
-# mARk 31-03-2021 change -O2 to -O3
+# mARk 31-03-2021 change -O3 to -O3
 HOSTCFLAGS   := -Wall -Wmissing-prototypes -Wstrict-prototypes -O3 \
 		-fomit-frame-pointer -std=gnu89 -pipe $(HOST_LFS_CFLAGS)
 HOSTCXXFLAGS := -O3 $(HOST_LFS_CFLAGS)
@@ -731,9 +731,9 @@ KBUILD_CFLAGS	+= $(call cc-disable-warning, stringop-truncation)
 KBUILD_CFLAGS	+= $(call cc-disable-warning, zero-length-bounds)
 
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
-KBUILD_CFLAGS   += -Os
+KBUILD_CFLAGS   += -Os 
 else
-KBUILD_CFLAGS   += -O3
+KBUILD_CFLAGS   += -O3 
 endif
 
 ifeq ($(cc-name),clang)
@@ -743,6 +743,15 @@ endif
 ifdef CONFIG_CC_WERROR
 KBUILD_CFLAGS	+= -Werror
 endif
+
+# Increase the speed of mathematical calculations
+KBUILD_CFLAGS  += -ffp-contract=fast 
+ 
+# Snapdragon optimization
+KBUILD_CFLAGS  +=  -fno-rtti
+KBUILD_CFLAGS  +=  -fno-trapping-math
+KBUILD_CFLAGS  +=  -fno-exceptions
+KBUILD_CFLAGS  +=  -fno-math-errno
 
 # Tell gcc to never replace conditional load with a non-conditional one
 KBUILD_CFLAGS	+= $(call cc-option,--param=allow-store-data-races=0)
@@ -912,7 +921,6 @@ KBUILD_LDFLAGS += $(LD_FLAGS_LTO_CLANG)
 KBUILD_LDFLAGS_MODULE += $(LD_FLAGS_LTO_CLANG)
 
 KBUILD_LDFLAGS_MODULE += -T $(srctree)/scripts/module-lto.lds
-
 # allow disabling only clang LTO where needed
 DISABLE_LTO_CLANG := -fno-lto -fvisibility=default
 export DISABLE_LTO_CLANG

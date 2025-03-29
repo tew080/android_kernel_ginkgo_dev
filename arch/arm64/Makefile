@@ -10,6 +10,15 @@
 #
 # Copyright (C) 1995-2001 by Russell King
 
+# Snapdragon optimization
+KBUILD_CFLAGS  +=  -march=armv8
+KBUILD_CFLAGS  +=  -mcpu=cortex-a53
+KBUILD_CFLAGS  +=  -mtune=cortex-a53
+KBUILD_CFLAGS  +=  -fno-rtti
+KBUILD_CFLAGS  +=  -fno-trapping-math
+KBUILD_CFLAGS  +=  -fno-exceptions
+KBUILD_CFLAGS  +=  -fno-math-errno
+
 LDFLAGS_vmlinux	:=--no-undefined -X -z norelro
 CPPFLAGS_vmlinux.lds = -DTEXT_OFFSET=$(TEXT_OFFSET)
 GZFLAGS		:=-9

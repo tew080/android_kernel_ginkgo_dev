@@ -17,7 +17,7 @@
 		qcom,mdss-dsi-panel-type = "dsi_video_mode";
 		qcom,mdss-dsi-virtual-channel-id = <0>;
 		qcom,mdss-dsi-stream = <0>;
-		qcom,mdss-dsi-bpp = <24>;
+		qcom,mdss-dsi-bpp = <16>;
 		qcom,mdss-dsi-border-color = <0>;
 		qcom,mdss-dsi-h-sync-pulse = <0>;
 		qcom,mdss-dsi-traffic-mode = "burst_mode";
@@ -28,7 +28,7 @@
 		qcom,mdss-dsi-lane-2-state;
 		qcom,mdss-dsi-lane-3-state;
 		qcom,mdss-dsi-dma-trigger = "trigger_sw";
-		qcom,mdss-dsi-mdp-trigger = "none";
+		qcom,mdss-dsi-mdp-trigger = "trigger_hw";
 		qcom,mdss-dsi-reset-sequence = <1 20>, <0 20>, <1 20>;
 		qcom,mdss-dsi-tx-eot-append;
 		qcom,mdss-pan-physical-width-dimension = <68>;
@@ -43,7 +43,7 @@
 				qcom,mdss-dsi-h-back-porch = <100>;
 				qcom,mdss-dsi-h-pulse-width = <4>;
 				qcom,mdss-dsi-h-sync-skew = <0>;
-				qcom,mdss-dsi-v-back-porch = <8>;
+				qcom,mdss-dsi-v-back-porch = <12>;
 				qcom,mdss-dsi-v-front-porch = <8>;
 				qcom,mdss-dsi-v-pulse-width = <1>;
 				qcom,mdss-dsi-panel-framerate = <60>;

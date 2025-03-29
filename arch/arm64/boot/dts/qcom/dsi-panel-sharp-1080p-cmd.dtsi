@@ -19,10 +19,10 @@
 		qcom,mdss-dsi-panel-clockrate = <850000000>;
 		qcom,mdss-dsi-virtual-channel-id = <0>;
 		qcom,mdss-dsi-stream = <0>;
-		qcom,mdss-dsi-bpp = <24>;
+		qcom,mdss-dsi-bpp = <16>;
 		qcom,mdss-dsi-underflow-color = <0xff>;
 		qcom,mdss-dsi-border-color = <0>;
-		qcom,mdss-dsi-reset-sequence = <1 10>, <0 10>, <1 10>;
+				qcom,mdss-dsi-reset-sequence = <1 5>, <0 5>, <1 5>;
 		qcom,mdss-pan-physical-width-dimension = <64>;
 		qcom,mdss-pan-physical-height-dimension = <117>;
 		qcom,mdss-dsi-traffic-mode = "burst_mode";
@@ -33,7 +33,7 @@
 		qcom,mdss-dsi-lane-2-state;
 		qcom,mdss-dsi-lane-3-state;
 		qcom,mdss-dsi-dma-trigger = "trigger_sw";
-		qcom,mdss-dsi-mdp-trigger = "none";
+		qcom,mdss-dsi-mdp-trigger = "trigger_hw";
 		qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_pwm";
 		qcom,mdss-dsi-te-pin-select = <1>;
 		qcom,mdss-dsi-wr-mem-start = <0x2c>;

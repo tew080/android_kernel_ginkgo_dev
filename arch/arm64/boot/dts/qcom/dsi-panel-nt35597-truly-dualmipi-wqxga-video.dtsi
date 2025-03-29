@@ -22,7 +22,7 @@
 			17000 15500 30000 8000 3000>;
 		qcom,mdss-dsi-panel-peak-brightness = <4200000>;
 		qcom,mdss-dsi-panel-blackness-level = <3230>;
-		qcom,mdss-dsi-traffic-mode = "non_burst_sync_event";
+		qcom,mdss-dsi-traffic-mode = "burst_mode";
 		qcom,mdss-dsi-bllp-eof-power-mode;
 		qcom,mdss-dsi-bllp-power-mode;
 		qcom,mdss-dsi-lane-0-state;
@@ -30,14 +30,14 @@
 		qcom,mdss-dsi-lane-2-state;
 		qcom,mdss-dsi-lane-3-state;
 		qcom,mdss-dsi-dma-trigger = "trigger_sw";
-		qcom,mdss-dsi-mdp-trigger = "none";
+		qcom,mdss-dsi-mdp-trigger = "trigger_hw";
 		qcom,mdss-dsi-reset-sequence = <1 20>, <0 20>, <1 50>;
 		qcom,mdss-pan-physical-width-dimension = <74>;
 		qcom,mdss-pan-physical-height-dimension = <131>;
 		qcom,mdss-dsi-tx-eot-append;
 		qcom,mdss-dsi-underflow-color = <0x3ff>;
 		qcom,mdss-dsi-border-color = <0>;
-		qcom,mdss-dsi-bpp = <24>;
+		qcom,mdss-dsi-bpp = <16>;
 
 		qcom,mdss-dsi-display-timings {
 			timing@0{

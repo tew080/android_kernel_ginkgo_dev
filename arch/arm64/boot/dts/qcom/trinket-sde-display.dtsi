@@ -553,7 +553,7 @@
 };
 
 &dsi_nt36672a_shenchao_video {
-	qcom,ulps-enabled;
+	// qcom,ulps-enabled;
 	qcom,mdss-dsi-t-clk-post = <0x0f>;
 	qcom,mdss-dsi-t-clk-pre = <0x37>;
 	qcom,mdss-dsi-panel-status-check-mode = "reg_read";
@@ -576,7 +576,7 @@
 };
 
 &dsi_nt36672a_tianma_video {
-	qcom,ulps-enabled;
+	// qcom,ulps-enabled;
 	qcom,mdss-dsi-t-clk-post = <0x0f>;
 	qcom,mdss-dsi-t-clk-pre = <0x37>;
 	qcom,mdss-dsi-panel-status-check-mode = "reg_read";
@@ -600,7 +600,7 @@
 };
 
 &dsi_ft8719_huaxing_video {
-	qcom,ulps-enabled;
+	// qcom,ulps-enabled;
 	qcom,mdss-dsi-t-clk-post = <0x0f>;
 	qcom,mdss-dsi-t-clk-pre = <0x37>;
 	qcom,mdss-dsi-panel-status-check-mode = "reg_read";
