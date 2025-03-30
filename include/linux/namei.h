@@ -74,12 +74,9 @@ extern struct dentry *kern_path_create(int, const char *, struct path *, unsigne
 extern struct dentry *user_path_create(int, const char __user *, struct path *, unsigned int);
 extern void done_path_create(struct path *, struct dentry *);
 extern struct dentry *kern_path_locked(const char *, struct path *);
-<<<<<<< HEAD
 extern int kern_path_mountpoint(int, const char *, struct path *, unsigned int);
 extern int vfs_path_lookup(struct dentry *, struct vfsmount *,
 		const char *, unsigned int, struct path *);
-=======
->>>>>>> 00ee88bc805e8 (LOOKUP_MOUNTPOINT: fold path_mountpointat() into path_lookupat())
 
 extern struct dentry *lookup_one_len(const char *, struct dentry *, int);
 extern struct dentry *lookup_one_len2(const char *, struct vfsmount *mnt, struct dentry *, int);

@@ -1730,24 +1730,7 @@ static inline bool may_mandlock(void)
 	return capable(CAP_SYS_ADMIN);
 }
 
-/*
- * Now umount can handle mount points as well as block devices.
- * This is important for filesystems which use unnamed block devices.
- *
- * We now support a flag for forced unmount like the other 'big iron'
- * unixes. Our API is identical to OSF/1 to avoid making a mess of AMD
- */
-
-SYSCALL_DEFINE2(umount, char __user *, name, int, flags)
-static int path_umount(struct path *path, int flags)
-{
-	struct mount *mnt;
-	int retval;
-	int lookup_flags = 0;
-	bool user_request = !(current->flags & PF_KTHREAD);
-}
-
-static int can_umount(const struct path *path, int flags)
+ static int can_umount(const struct path *path, int flags)
 {
 	struct mount *mnt = real_mount(path->mnt);
 
@@ -1774,37 +1757,6 @@ int path_umount(struct path *path, int flags)
 	if (!ret)
 		ret = do_umount(mnt, flags);
 
-	/* flush delayed_fput to put mnt_count */
-	if (user_request)
-		flush_delayed_fput_wait();
-
-	retval = do_umount(mnt, flags);
-dput_and_out:
-	/* we mustn't call path_put() as that would clear mnt_expiry_mark */
-	dput(path->dentry);
-	mntput_no_expire(mnt);
-
-	if (!user_request)
-		goto out;
-
-	if (!retval) {
-		/*
-		 * If the last delayed_fput() is called during do_umount()
-		 * and makes mnt_count zero, we need to guarantee to register
-		 * delayed_mntput by waiting for delayed_fput work again.
-		 */
-		flush_delayed_fput_wait();
-
-		/* flush delayed_mntput_work to put sb->s_active */
-		flush_delayed_mntput_wait();
-	}
-	if (!retval || (flags & MNT_FORCE)) {
-		/* filesystem needs to handle unclosed namespaces */
-		if (mnt->mnt.mnt_sb->s_op->umount_end)
-			mnt->mnt.mnt_sb->s_op->umount_end(mnt->mnt.mnt_sb, flags);
-	}
-out:
-	return retval;
 	/* we mustn't call path_put() as that would clear mnt_expiry_mark */
 	dput(path->dentry);
 	mntput_no_expire(mnt);
@@ -2919,8 +2871,8 @@ long do_mount(const char *dev_name, const char __user *dir_name,
 		goto dput_out;
 
 	/* Default to relatime unless overriden */
-	if (!(flags & MS_NOATIME))
-		mnt_flags |= MNT_RELATIME;
+	//if (!(flags & MS_NOATIME))
+		//mnt_flags |= MNT_RELATIME;
 
 	/* Separate the per-mountpoint flags */
 	if (flags & MS_NOSUID)
@@ -2929,9 +2881,9 @@ long do_mount(const char *dev_name, const char __user *dir_name,
 		mnt_flags |= MNT_NODEV;
 	if (flags & MS_NOEXEC)
 		mnt_flags |= MNT_NOEXEC;
-	if (flags & MS_NOATIME)
+	//if (flags & MS_NOATIME)
 		mnt_flags |= MNT_NOATIME;
-	if (flags & MS_NODIRATIME)
+	//if (flags & MS_NODIRATIME)
 		mnt_flags |= MNT_NODIRATIME;
 	if (flags & MS_STRICTATIME)
 		mnt_flags &= ~(MNT_RELATIME | MNT_NOATIME);
