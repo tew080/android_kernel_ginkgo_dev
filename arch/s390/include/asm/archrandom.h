@@ -14,7 +14,6 @@
 #ifdef CONFIG_ARCH_RANDOM
 
 #include <linux/static_key.h>
-#include <linux/preempt.h>
 #include <linux/atomic.h>
 #include <asm/cpacf.h>
 
