@@ -1934,7 +1934,7 @@ static int cfq_set_group_idle(struct cgroup_subsys_state *css,
 	struct blkcg_gq *blkg;
 	int ret = 0;
 
-	if (task_is_zygote(current))
+	if (task_is_booster(current))
 		return ret;
 
 	spin_lock_irq(&blkcg->lock);
