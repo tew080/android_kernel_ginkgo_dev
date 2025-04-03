@@ -998,7 +998,7 @@ static int adreno_of_get_power(struct adreno_device *adreno_dev,
 		device->pwrctrl.pm_qos_wakeup_latency = 100;
 
 	if (of_property_read_u32(node, "qcom,idle-timeout", &timeout))
-		timeout = 100;
+		timeout = 80;
 
 	device->pwrctrl.interval_timeout = msecs_to_jiffies(timeout);
 
@@ -1584,6 +1584,9 @@ static int adreno_init(struct kgsl_device *device)
 		}
 
 	}
+
+
+	device->pwrscale.devfreqptr->max_freq = 1300000000;
 
 	return 0;
 }
