@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- * Copyright (C) 2023 Sultan Alsawaf <sultan@kerneltoast.com>.
+ * Copyright (C) 2023-2024 Sultan Alsawaf <sultan@kerneltoast.com>.
  */
 
 /**
@@ -73,7 +73,7 @@ void cass_cpu_util(struct cass_cpu_cand *c, int this_cpu, bool sync)
 static __always_inline
 bool cass_cpu_better(const struct cass_cpu_cand *a,
 		     const struct cass_cpu_cand *b,
-		     int prev_cpu, bool sync)
+		     int this_cpu, int prev_cpu, bool sync)
 {
 #define cass_cmp(a, b) ({ res = (a) - (b); })
 #define cass_eq(a, b) ({ res = (a) == (b); })
@@ -84,8 +84,7 @@ bool cass_cpu_better(const struct cass_cpu_cand *a,
 		goto done;
 
 	/* Prefer the current CPU for sync wakes */
-	if (sync && (cass_eq(a->cpu, smp_processor_id()) ||
-		     !cass_cmp(b->cpu, smp_processor_id())))
+	if (sync && (cass_eq(a->cpu, this_cpu) || !cass_cmp(b->cpu, this_cpu)))
 		goto done;
 
 	/* Prefer the previous CPU */
@@ -109,12 +108,16 @@ static int cass_best_cpu(struct task_struct *p, int prev_cpu, bool sync, bool rt
 	const struct cpumask *valid_mask =
 		(adj > -1 && adj < 225) ? cpu_perf_mask : cpu_lp_mask;
 
-	/* Get the utilization for this task */
-	p_util = task_util_est(p);
-
 	/*
-	 * Find the best CPU to wake @p on. The RCU read lock is needed for
-	 * idle_get_state().
+	 * Find the best CPU to wake @p on. Although idle_get_state() requires
+	 * an RCU read lock, an RCU read lock isn't needed because we're not
+	 * preemptible and RCU-sched is unified with normal RCU. Therefore,
+	 * non-preemptible contexts are implicitly RCU-safe.
+	 *
+	 * Note: @curr->cpu must be initialized before this loop ends. This is
+	 * necessary to ensure @best->cpu contains a valid CPU upon returning;
+	 * otherwise, if only one CPU is allowed and it is skipped before
+	 * @curr->cpu is set, then @best->cpu will be garbage.
 	 */
 	for_each_cpu_and(cpu, valid_mask, cpu_active_mask) {
 		/* Use the free candidate slot for @curr */
@@ -122,8 +125,8 @@ static int cass_best_cpu(struct task_struct *p, int prev_cpu, bool sync, bool rt
 		struct rq *rq = cpu_rq(cpu);
 
 		/*
-		 * Check if this CPU is idle. For sync wakes, always treat the
-		 * current CPU as idle.
+		 * Check if this CPU is idle or only has SCHED_IDLE tasks. For
+		 * sync wakes, always treat the current CPU as idle.
 		 */
 		if ((sync && cpu == this_cpu && rq->nr_running == 1) || 
 			(idle_cpu(cpu) && !cpu_isolated(cpu)))
@@ -155,7 +158,6 @@ static int cass_best_cpu(struct task_struct *p, int prev_cpu, bool sync, bool rt
 			cidx ^= 1;
 		}
 	}
-	rcu_read_unlock();
 
 	return best->cpu;
 }
@@ -174,8 +176,8 @@ static int cass_select_task_rq(struct task_struct *p, int prev_cpu,
 	 * first valid CPU since it's possible for certain types of tasks to run
 	 * on inactive CPUs.
 	 */
-	if (unlikely(!cpumask_intersects(&p->cpus_allowed, cpu_active_mask)))
-		return cpumask_first(&p->cpus_allowed);
+	if (unlikely(!cpumask_intersects(p->cpus_ptr, cpu_active_mask)))
+		return cpumask_first(p->cpus_ptr);
 
 	/* cass_best_cpu() needs the CFS task's utilization, so sync it up */
 	if (!rt && !(sd_flag & SD_BALANCE_FORK))
