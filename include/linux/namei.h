@@ -16,13 +16,18 @@ enum { MAX_NESTED_LINKS = 8 };
  */
 enum {LAST_NORM, LAST_ROOT, LAST_DOT, LAST_DOTDOT, LAST_BIND};
 
-/* pathwalk mode */
-#define LOOKUP_FOLLOW		0x0001	/* follow links at the end */
-#define LOOKUP_DIRECTORY	0x0002	/* require a directory */
-#define LOOKUP_AUTOMOUNT	0x0004  /* force terminal automount */
-#define LOOKUP_EMPTY		0x4000	/* accept empty path [user_... only] */
-#define LOOKUP_DOWN		0x8000	/* follow mounts in the starting point */
-#define LOOKUP_MOUNTPOINT	0x0080	/* follow mounts in the end */
+/*
+ * The bitmask for a lookup event:
+ *  - follow links at the end
+ *  - require a directory
+ *  - ending slashes ok even for nonexistent files
+ *  - internal "there are more path components" flag
+ *  - dentry cache is untrusted; force a real lookup
+ *  - suppress terminal automount
+ */
+#define LOOKUP_FOLLOW		0x0001
+#define LOOKUP_DIRECTORY	0x0002
+#define LOOKUP_AUTOMOUNT	0x0004
 
 #define LOOKUP_PARENT		0x0010
 #define LOOKUP_REVAL		0x0020
@@ -74,12 +79,9 @@ extern struct dentry *kern_path_create(int, const char *, struct path *, unsigne
 extern struct dentry *user_path_create(int, const char __user *, struct path *, unsigned int);
 extern void done_path_create(struct path *, struct dentry *);
 extern struct dentry *kern_path_locked(const char *, struct path *);
-<<<<<<< HEAD
 extern int kern_path_mountpoint(int, const char *, struct path *, unsigned int);
 extern int vfs_path_lookup(struct dentry *, struct vfsmount *,
 		const char *, unsigned int, struct path *);
-=======
->>>>>>> 00ee88bc805e8 (LOOKUP_MOUNTPOINT: fold path_mountpointat() into path_lookupat())
 
 extern struct dentry *lookup_one_len(const char *, struct dentry *, int);
 extern struct dentry *lookup_one_len2(const char *, struct vfsmount *mnt, struct dentry *, int);
