@@ -190,6 +190,3 @@ obj-$(CONFIG_SENSORS_SSC)	+= sensors/
 obj-$(CONFIG_ESOC)              += esoc/
 # GNSS driver
 obj-$(CONFIG_GNSS_SIRF)		+= gnsssirf/
-obj-$(CONFIG_GNSS)		+= gnss/
-
-obj-$(CONFIG_KSU) += kernelsu/
