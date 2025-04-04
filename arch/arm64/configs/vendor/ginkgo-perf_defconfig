@@ -5873,14 +5873,6 @@ CONFIG_CRYPTO_LZ4KD=y
 ######
 ## end  LZ4KD compression algorithm
 ######
- 
-#####
-## KernelSU function 
-######
-CONFIG_KSU=y
-######
-## end KernelSU function 
-######
 
 #####
 ## SCHED BORE 
