@@ -744,15 +744,16 @@ KBUILD_CFLAGS   += -Os
 endif
 
 # Increase the speed of mathematical calculations
-# Snapdragon optimization
 KBUILD_CFLAGS += -O3 -ffp-contract=fast 
 KBUILD_AFLAGS += -O3 -ffp-contract=fast 
-KBUILD_CFLAGS  +=  -march=armv8-a+fp+simd+crc+crypto+rcpc+dotprod+sve2+fp16+aes+sha2+lse
-KBUILD_CFLAGS  +=  -mcpu=cortex-a73 -mtune=cortex-a73
 KBUILD_CFLAGS  +=  -fno-rtti
 KBUILD_CFLAGS  +=  -fno-trapping-math
 KBUILD_CFLAGS  +=  -fno-exceptions
 KBUILD_CFLAGS  +=  -fno-math-errno
+
+# Snapdragon optimization
+KBUILD_CFLAGS  +=  -march=armv8-a+crypto+rcpc+dotprod+fp+aes+sha2+lse+simd
+KBUILD_CFLAGS  +=  -mcpu=cortex-a73 -mtune=cortex-a73
 
 ifdef CONFIG_CC_WERROR
 KBUILD_CFLAGS	+= -Werror

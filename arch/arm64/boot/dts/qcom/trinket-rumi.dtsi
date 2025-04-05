@@ -33,11 +33,11 @@
 	};
 
 	timer {
-		clock-frequency = <800000>;
+		clock-frequency = <1000000>;
 	};
 
 	timer@f120000 {
-		clock-frequency = <800000>;
+		clock-frequency = <1000000>;
 	};
 
 	wdog: qcom,wdt@f017000{
